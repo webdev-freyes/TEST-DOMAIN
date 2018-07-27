@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Frey RND</title>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css">
+	<style type="text/css">
+
+		/* global css */
+		html {
+			height: 100%;
+			padding-bottom: 500px;
+			background-image: linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12);
+		}
+
+		html * {
+			font-family: arial;
+			font-size: 16px;
+			color: #fff;
+		}
+
+		header p {
+			margin: 30px 0;
+			padding: 0;
+			text-align: center;
+			color: #fff;
+	    font-size: 40px;
+	    text-transform: uppercase;
+
+		}
+
+		.task-title {
+			margin: 0;
+			padding-top: 20px;
+			color: #fff;
+			font-size: 25px;
+			border-top: 1px solid #d4d4d4;
+		}
+
+		.container {
+			width: 500px;
+			margin: 50px auto;
+		}
+
+		input {
+			width: 90%;
+			padding: 5px 10px;
+			color: #333;
+			font-size: 13px;
+			border: none;
+			border-radius: 10px;
+		}
+
+		input:placeholder {
+			color: #333;
+		}
+
+		.date {
+			display: inline-block;
+			margin: 10px 0 20px 0;
+			color: #fff;
+			font-size: 13px;
+	    border-bottom: 1px solid #fff;
+		}
+
+		/* todo list */
+		#todoApp {
+			width: 500px;
+			margin: 0 auto;
+			text-align: left;
+		}
+
+		ol {
+			margin: 15px 0 0;
+			padding: 0 0 0 15px;
+		}
+
+		ol li {
+			margin: 10px 0;
+			text-align: left;
+			color: #fff;
+			font-size: 16px;
+		}
+
+		.destroy {
+			margin-left: 10px;
+			cursor: pointer;
+		}
+
+	</style>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+</head>
+<body>
+  <header>
+    <p>Research and Development</p>
+  </header>
+  <main class="main-page">
+		<!-- start todo list -->
+    <div id="todoApp" class="container">
+			<p class="task-title">A very basic and simple todo list</p>
+			<p class="date">July 24, 2018</p>
+			<input class="input-todo" type="text" v-model="newTodo" v-on:keyup.enter="addTodo" placeholder="Create Todo List">
+			<ol class="todo-list">
+				<li v-for="todo in todos" class="todo">
+					<div class="view">
+						<label> {{ todo.title }} </label>
+						<a class="destroy" v-on:click="removeTodo(todo)"><i class="fas fa-trash"></i></a>
+					</div>
+				</li>
+			</ol>
+    </div>
+		<!-- end todo list -->
+
+		<!-- start extending vueJS -->
+		<div id="dataBinding" class="container">
+			<p class="task-title">Extending VueJS</p>
+			<p class="date">July 25, 2018</p>
+			<input type="text" v-on:input="changeValue" placeholder="input any text here">
+			<p> {{ title }} </p>
+		</div>
+		<!-- end extending vueJS -->
+
+		<div id="ajaxCall" class="container">
+			<p class="task-title">Ajax Call</p>
+			<input type="button" id="ajaxBtn" value="Send Ajax request" />
+			<p id="ajaxData"></p>
+		</div>
+  </main>
+  <footer>
+	<script>
+		// start todo list
+		new Vue({
+		  el: '#todoApp',
+		  data () {
+				return {
+					newTodo: '',
+					todos: [{id: 0, title: 'Create Todo List', completed: 'false'}]
+				}
+			},
+			methods: {
+				addTodo() {
+					this.todos.push({ title: this.newTodo, completed: 'false', id: this.todos.length });
+					this.newTodo = '';
+				},
+				removeTodo(todo) {
+					this.todos.splice(this.todos.indexOf(todo), 1);
+				}
+			}
+		});
+
+		// Extending vuejs
+		new Vue({
+			el: '#dataBinding',
+			data: {
+				title: 'this text will change'
+			},
+			methods: {
+				changeValue: function(event) {
+					this.title = event.target.value;
+				}
+			}
+		});
+
+		// ajax call
+		$(document).ready(function () {
+		 $('#ajaxBtn').click(function(){
+			$.ajax('http://www.tutorialsteacher.com/jquery/getdata',   // request url
+			{
+				success: function (data, status, xhr) {    // success callback function
+						$('#ajaxData').append(data);
+				}
+			});
+		 });
+		});
+	</script>
+  </footer>
+</body>
+</html>
